@@ -1,0 +1,36 @@
+{
+  "name": "ai-agent-committee",
+  "version": "2.0.0",
+  "description": "MCP Agent Committee Server - Multi-agent LLM system with parallel execution and committee aggregation",
+  "main": "src/server/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server/index.js",
+    "dev": "nodemon src/server/index.js",
+    "test": "node scripts/testCommittee.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "axios": "^1.6.0",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "mcp",
+    "ai",
+    "llm",
+    "agent",
+    "committee",
+    "multi-agent",
+    "openai",
+    "anthropic",
+    "gemini"
+  ],
+  "author": "",
+  "license": "MIT"
+}
