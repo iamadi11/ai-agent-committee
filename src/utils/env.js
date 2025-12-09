@@ -19,7 +19,8 @@ dotenv.config({ path: join(__dirname, '../../.env') });
 export const PROVIDERS = {
   OPENAI: 'openai',
   ANTHROPIC: 'anthropic',
-  GEMINI: 'gemini'
+  GEMINI: 'gemini',
+  GROQ: 'groq'
 };
 
 /**
@@ -30,7 +31,8 @@ export function getApiKeys() {
   const keys = {
     [PROVIDERS.OPENAI]: process.env.OPENAI_API_KEY,
     [PROVIDERS.ANTHROPIC]: process.env.ANTHROPIC_API_KEY,
-    [PROVIDERS.GEMINI]: process.env.GEMINI_API_KEY
+    [PROVIDERS.GEMINI]: process.env.GEMINI_API_KEY,
+    [PROVIDERS.GROQ]: process.env.GROQ_API_KEY
   };
   
   // Normalize: convert undefined, empty strings, and whitespace-only strings to null
@@ -62,7 +64,7 @@ export function validateProviders() {
   const available = getAvailableProviders();
   if (available.length === 0) {
     throw new Error(
-      'No LLM providers configured. Please set at least one of: OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY in .env file'
+      'No LLM providers configured. Please set at least one of: OPENAI_API_KEY, ANTHROPIC_API_KEY, GEMINI_API_KEY, GROQ_API_KEY in .env file'
     );
   }
   return available;
@@ -85,8 +87,8 @@ export function getDefaultProvider() {
     return available[0];
   }
   
-  // If multiple providers are available, prioritize: GEMINI > ANTHROPIC > OPENAI
-  const priorityOrder = [PROVIDERS.GEMINI, PROVIDERS.ANTHROPIC, PROVIDERS.OPENAI];
+  // If multiple providers are available, prioritize: GEMINI > GROQ > ANTHROPIC > OPENAI
+  const priorityOrder = [PROVIDERS.GEMINI, PROVIDERS.GROQ, PROVIDERS.ANTHROPIC, PROVIDERS.OPENAI];
   
   for (const provider of priorityOrder) {
     if (available.includes(provider)) {

@@ -7,6 +7,7 @@ import { parentPort, workerData } from 'worker_threads';
 import { OpenAIAgent } from '../agents/openaiAgent.js';
 import { AnthropicAgent } from '../agents/anthropicAgent.js';
 import { GeminiAgent } from '../agents/geminiAgent.js';
+import { GroqAgent } from '../agents/groqAgent.js';
 import { getApiKey, PROVIDERS } from '../utils/env.js';
 import { ProviderError, ValidationError } from '../utils/errors.js';
 
@@ -29,6 +30,8 @@ function createAgent(provider, options = {}) {
       return new AnthropicAgent(apiKey, options);
     case PROVIDERS.GEMINI:
       return new GeminiAgent(apiKey, options);
+    case PROVIDERS.GROQ:
+      return new GroqAgent(apiKey, options);
     default:
       throw new Error(`Unknown provider: ${provider}`);
   }

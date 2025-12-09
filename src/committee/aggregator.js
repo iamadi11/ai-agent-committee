@@ -6,6 +6,7 @@
 import { OpenAIAgent } from '../agents/openaiAgent.js';
 import { AnthropicAgent } from '../agents/anthropicAgent.js';
 import { GeminiAgent } from '../agents/geminiAgent.js';
+import { GroqAgent } from '../agents/groqAgent.js';
 import { getDefaultProvider, getApiKey, PROVIDERS } from '../utils/env.js';
 import { log, error } from '../utils/logger.js';
 import { ProviderError, ValidationError } from '../utils/errors.js';
@@ -43,6 +44,9 @@ async function createAggregatorAgent(provider = null, model = null) {
         case PROVIDERS.GEMINI:
           agent = new GeminiAgent(apiKey, { temperature: 0.3 });
           break;
+        case PROVIDERS.GROQ:
+          agent = new GroqAgent(apiKey, { temperature: 0.3 });
+          break;
         default:
           return null;
       }
@@ -62,6 +66,9 @@ async function createAggregatorAgent(provider = null, model = null) {
         case PROVIDERS.GEMINI:
           targetModel = 'gemini-pro';
           break;
+        case PROVIDERS.GROQ:
+          targetModel = 'llama-3.3-70b-versatile';
+          break;
         default:
           return null;
       }
@@ -79,6 +86,8 @@ async function createAggregatorAgent(provider = null, model = null) {
       return new AnthropicAgent(apiKey, { model: targetModel, temperature: 0.3 });
     case PROVIDERS.GEMINI:
       return new GeminiAgent(apiKey, { model: targetModel, temperature: 0.3 });
+    case PROVIDERS.GROQ:
+      return new GroqAgent(apiKey, { model: targetModel, temperature: 0.3 });
     default:
       return null;
   }

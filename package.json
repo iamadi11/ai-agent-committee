@@ -29,7 +29,8 @@
     "multi-agent",
     "openai",
     "anthropic",
-    "gemini"
+    "gemini",
+    "groq"
   ],
   "author": "",
   "license": "MIT"

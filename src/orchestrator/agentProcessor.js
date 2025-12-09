@@ -14,6 +14,7 @@ import { WorkerError, TimeoutError, ConfigurationError } from '../utils/errors.j
 import { OpenAIAgent } from '../agents/openaiAgent.js';
 import { AnthropicAgent } from '../agents/anthropicAgent.js';
 import { GeminiAgent } from '../agents/geminiAgent.js';
+import { GroqAgent } from '../agents/groqAgent.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -226,6 +227,9 @@ export async function processAllAgents(userRequest, context = '', presetName = '
             break;
           case PROVIDERS.GEMINI:
             agentInstance = new GeminiAgent(apiKey);
+            break;
+          case PROVIDERS.GROQ:
+            agentInstance = new GroqAgent(apiKey);
             break;
         }
         if (agentInstance) {
