@@ -1,99 +1,75 @@
 # AI Agent Committee MCP Server
 
-<div align="center">
-
-**A powerful multi-agent system that orchestrates specialized AI agents to analyze your requests from multiple perspectives in parallel**
-
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-green.svg)](https://nodejs.org/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![MCP](https://img.shields.io/badge/MCP-Protocol-orange.svg)](https://modelcontextprotocol.io/)
 
-</div>
+This is a multi-agent system that runs multiple specialized AI agents in parallel to tackle your coding tasks from different angles. Instead of getting one AI's answer, you get a whole committee working together.
 
----
+## What's the idea?
 
-## 📊 Codebase Stats
+You know how sometimes you want multiple perspectives on a coding problem? Like asking one person about architecture, another about security, and someone else about performance? That's what this does, but with AI agents running at the same time.
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  📁 Files: 17 JS files, 3 JSON configs                 │
-│  📝 Lines: ~2,931 lines of code                         │
-│  🤖 Agents: 4 presets (7-5 agents each)                │
-│  🔌 Providers: 3 LLM providers (OpenAI, Anthropic, Gemini) │
-│  ⚡ Architecture: Modular, ESM, Worker Threads         │
-└─────────────────────────────────────────────────────────┘
-```
+Here's what each agent brings to the table:
 
-## 🎯 What It Does
+- **Architect** - Thinks about system design and patterns
+- **Planner** - Breaks down tasks and figures out strategy
+- **Coder** - Focuses on implementation and best practices
+- **Reviewer** - Checks code quality and correctness
+- **Refactor** - Looks at maintainability and structure
+- **Security** - Finds vulnerabilities and security issues
+- **Performance** - Optimizes and finds bottlenecks
 
-Instead of getting one AI's perspective, you get **multiple specialized agents** working together:
+They all run in parallel using Node.js worker threads, and then an aggregator combines all their outputs into something coherent. It's pretty neat when you see it working.
 
-- **Architect** → System design & patterns
-- **Planner** → Task breakdown & strategy  
-- **Coder** → Implementation & best practices
-- **Reviewer** → Code quality & correctness
-- **Refactor** → Maintainability & structure
-- **Security** → Vulnerabilities & best practices
-- **Performance** → Optimization & bottlenecks
+## Getting Started
 
-All agents work **in parallel** using Node.js worker threads, then a **Committee Aggregator** synthesizes their outputs into a final result.
-
-## 🚀 Quick Start
-
-### Prerequisites
-
-- Node.js >= 18.0.0
-- At least one LLM API key (OpenAI, Anthropic, or Gemini)
-
-### Installation
+You'll need Node.js 18 or higher, and at least one LLM API key (OpenAI, Anthropic, or Gemini - pick whichever you prefer).
 
 ```bash
-# Clone the repository
 git clone <repository-url>
 cd ai-agent-committee
-
-# Install dependencies
 npm install
-
-# Create .env file
-cp .env.example .env
-# Edit .env and add your API keys:
-# OPENAI_API_KEY=your_key_here
-# ANTHROPIC_API_KEY=your_key_here
-# GEMINI_API_KEY=your_key_here
 ```
 
-### Verify Setup
+Create a `.env` file and add your API keys:
 
 ```bash
-npm test
+OPENAI_API_KEY=your_key_here
+ANTHROPIC_API_KEY=your_key_here
+GEMINI_API_KEY=your_key_here
 ```
 
-## 💻 Usage
+You only need one of these, but you can use all three if you want. Run `npm test` to make sure everything is working.
 
-### Method 1: Direct Usage (Command Line / Scripts)
+## How to Use It
 
-Run the server directly and use it programmatically:
+There are a couple ways to use this. The easiest is probably through your IDE if it supports MCP, but you can also use it from the command line or import it in your code.
+
+### Using from Command Line
 
 ```bash
-# Start the MCP server
 npm start
+```
 
-# Or with hot-reload (development)
+Or if you want hot-reload during development:
+
+```bash
 npm run dev
 ```
 
-**Using the test script:**
+There's also a test script that lets you try it out quickly:
 
 ```bash
-# Basic usage
 npm test
 
-# Custom request
+# Or with your own request
 node scripts/testCommittee.js "Create a REST API for user authentication" "" "specialized"
 ```
 
-**Programmatic usage:**
+### Using in Your Code
+
+You can import and use it directly:
 
 ```javascript
 import { processAllAgents } from './src/orchestrator/agentProcessor.js';
@@ -108,15 +84,14 @@ const result = await processAllAgents(
 console.log(result);
 ```
 
-### Method 2: IDE Integration (MCP)
+### Using in Your IDE (MCP)
 
-Works with any IDE that supports MCP (Cursor, VS Code, etc.).
+This works with any IDE that supports MCP (like Cursor or VS Code with the right extension).
 
-#### Cursor IDE Setup
+**For Cursor:**
 
-1. **Configure MCP in Cursor:**
-   - Open Cursor Settings → `Features` → `Model Context Protocol`
-   - Edit `~/.cursor/mcp.json`:
+1. Go to Cursor Settings → `Features` → `Model Context Protocol`
+2. Edit `~/.cursor/mcp.json` and add:
 
 ```json
 {
@@ -134,21 +109,15 @@ Works with any IDE that supports MCP (Cursor, VS Code, etc.).
 }
 ```
 
-2. **Use in Cursor:**
-   - Open chat/composer
-   - Type `@process_committee` or use MCP tools menu
-   - Provide your request:
+3. Then in Cursor's chat, type `@process_committee` or use the MCP tools menu. Something like:
    ```
    @process_committee request="Create a REST API for user authentication" agentPreset="specialized"
    ```
 
-#### VS Code Setup
+**For VS Code:**
 
-1. **Install MCP Extension:**
-   - Install `Model Context Protocol` extension from marketplace
-
-2. **Configure in VS Code:**
-   - Edit `.vscode/settings.json` or user settings:
+1. Install the `Model Context Protocol` extension
+2. Edit `.vscode/settings.json` (or your user settings):
 
 ```json
 {
@@ -166,13 +135,11 @@ Works with any IDE that supports MCP (Cursor, VS Code, etc.).
 }
 ```
 
-3. **Use the tool:**
-   - Press `Cmd/Ctrl + Shift + P`
-   - Search "MCP: Call Tool"
-   - Select `process_committee`
-   - Enter your request
+3. Press `Cmd/Ctrl + Shift + P`, search for "MCP: Call Tool", select `process_committee`, and enter your request.
 
-#### Direct MCP Tool Invocation
+**Direct MCP protocol calls:**
+
+If you're calling it directly via the MCP protocol, here's the format:
 
 ```json
 {
@@ -191,91 +158,56 @@ Works with any IDE that supports MCP (Cursor, VS Code, etc.).
 }
 ```
 
-## 🤖 Agent Presets
+## Agent Presets
 
-Choose the right team for your task:
+There are different presets you can use depending on what you're working on. Each one has a different mix of agents tuned for specific tasks.
 
-| Preset | Agents | Best For |
-|--------|--------|----------|
-| **specialized** | 7 agents | Comprehensive analysis, complex projects |
-| **frontend** | 5 agents | UI/UX, React, Vue, frontend architecture |
-| **backend** | 5 agents | APIs, databases, microservices, server logic |
-| **fullstack** | 5 agents | End-to-end systems, full application development |
+| Preset | Agents | When to Use |
+|--------|--------|-------------|
+| **specialized** | 7 agents | Complex projects, when you need comprehensive analysis |
+| **frontend** | 5 agents | UI/UX work, React/Vue projects, frontend architecture |
+| **backend** | 5 agents | APIs, databases, microservices, server-side stuff |
+| **fullstack** | 5 agents | Full applications, end-to-end development |
 
-### Specialized Agents (Default)
+The default is `specialized`, which includes all 7 agents:
+- **ArchitectAgent** - System architecture & design patterns
+- **PlannerAgent** - Implementation planning & breakdown
+- **CoderAgent** - Code implementation & best practices
+- **ReviewerAgent** - Code quality & correctness review
+- **RefactorAgent** - Code structure & maintainability
+- **SecurityAgent** - Security vulnerabilities & best practices
+- **PerformanceAgent** - Performance optimization & bottlenecks
 
-```
-┌─────────────────────────────────────────────────────────┐
-│  ArchitectAgent  → System architecture & design patterns│
-│  PlannerAgent    → Implementation planning & breakdown  │
-│  CoderAgent      → Code implementation & best practices │
-│  ReviewerAgent   → Code quality & correctness review   │
-│  RefactorAgent   → Code structure & maintainability     │
-│  SecurityAgent   → Security vulnerabilities & practices│
-│  PerformanceAgent→ Performance optimization & bottlenecks│
-└─────────────────────────────────────────────────────────┘
-```
+## How It Works
 
-## 🏗️ Architecture
+Here's the basic flow:
 
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Your Request                         │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│              MCP Server (Orchestrator)                   │
-│  • Input validation                                     │
-│  • Agent configuration loading                          │
-│  • Prompt generation                                    │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│         Worker Threads (Parallel Execution)             │
-│  ┌──────────┐  ┌──────────┐  ┌──────────┐            │
-│  │ Agent 1   │  │ Agent 2   │  │ Agent 7  │            │
-│  │ → LLM API │  │ → LLM API │  │ → LLM API│            │
-│  └──────────┘  └──────────┘  └──────────┘            │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│            Committee Aggregator                          │
-│  • Evaluates all outputs                                │
-│  • LLM-based synthesis (or heuristic fallback)          │
-│  • Produces final result with winner & recommendations │
-└──────────────────────┬──────────────────────────────────┘
-                       │
-                       ▼
-┌─────────────────────────────────────────────────────────┐
-│              Formatted Response                          │
-│  • All agent responses                                  │
-│  • Final synthesis                                      │
-│  • Recommendations & code                               │
-└─────────────────────────────────────────────────────────┘
-```
+1. You send a request
+2. The MCP server validates it, loads agent configs, and generates prompts
+3. All agents run in parallel using Node.js worker threads (they all hit the LLM API at the same time)
+4. The committee aggregator takes all the outputs and synthesizes them into a final result
+5. You get back all the individual agent responses plus a synthesized final answer
 
-## ⚙️ Configuration
+The parallel execution is what makes this fast - instead of waiting for 7 agents to run one after another, they all go at once. The aggregator then picks the best ideas from each and combines them.
+
+## Configuration
 
 ### Environment Variables
 
-Create `.env` file:
+Create a `.env` file with at least one API key (you only need one, but you can add all three):
 
 ```bash
-# At least one API key required
 OPENAI_API_KEY=your_openai_api_key_here
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# Optional: Default provider
+# Optional: pick a default provider
 DEFAULT_PROVIDER=openai
 ```
 
-### Agent Configuration
+### Adding Custom Agents
 
-Agents are defined in `config/agentConfigs.json`. To add a new agent:
+If you want to add your own agents, edit `config/agentConfigs.json`. The structure looks like this:
 
 ```json
 {
@@ -296,20 +228,20 @@ Agents are defined in `config/agentConfigs.json`. To add a new agent:
 }
 ```
 
-## 📝 API Reference
+## API Reference
 
-### MCP Tool: `process_committee`
+The MCP tool is called `process_committee`. Here's what you can pass to it:
 
 **Parameters:**
-- `request` (required, string): The task or request to process
-- `context` (optional, string): Additional context from previous conversations
-- `agentPreset` (optional, string): `"specialized"`, `"frontend"`, `"backend"`, `"fullstack"` (default: `"specialized"`)
-- `provider` (optional, string): `"openai"`, `"anthropic"`, `"gemini"` (default: first available)
-- `aggregatorProvider` (optional, string): Provider for aggregator (default: same as provider)
-- `model` (optional, string): Specific model to use (e.g., `"gpt-4o-mini"`)
-- `aggregatorModel` (optional, string): Model for aggregator
+- `request` (required) - The task you want the agents to work on
+- `context` (optional) - Any additional context from previous conversations
+- `agentPreset` (optional) - `"specialized"`, `"frontend"`, `"backend"`, or `"fullstack"`. Defaults to `"specialized"`
+- `provider` (optional) - `"openai"`, `"anthropic"`, or `"gemini"`. Defaults to the first available one
+- `aggregatorProvider` (optional) - Which provider to use for the aggregator. Defaults to the same as `provider`
+- `model` (optional) - Specific model like `"gpt-4o-mini"` if you want to override defaults
+- `aggregatorModel` (optional) - Model for the aggregator
 
-**Response Structure:**
+**What you get back:**
 
 ```json
 {
@@ -338,43 +270,43 @@ Agents are defined in `config/agentConfigs.json`. To add a new agent:
 }
 ```
 
-## 🔧 Features
+## Features
 
-✅ **Parallel Processing** - All agents execute simultaneously  
-✅ **Multiple LLM Providers** - OpenAI, Anthropic, Gemini  
-✅ **Multiple Agent Presets** - Specialized, Frontend, Backend, Fullstack  
-✅ **Committee Aggregation** - LLM-based synthesis of all outputs  
-✅ **MCP Integration** - Works with any MCP-compatible IDE  
-✅ **Robust Error Handling** - MCP-compliant error codes  
-✅ **Input Validation** - Comprehensive validation & sanitization  
-✅ **Resource Management** - Timeout handling, proper cleanup  
-✅ **Fallback Mode** - Works without API keys (prompt-only mode)
+- All agents run in parallel (much faster than sequential)
+- Supports OpenAI, Anthropic, and Gemini APIs
+- Different agent presets for different types of work
+- Aggregator combines all agent outputs into something coherent
+- Works as an MCP server, so you can use it in Cursor, VS Code, etc.
+- Error handling that follows MCP standards
+- Input validation to catch issues early
+- Timeouts and cleanup to prevent resource leaks
+- Can run in a fallback mode without API keys (though responses will be limited)
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
-### "No LLM providers configured"
-- Set at least one API key in `.env` file
-- Or use Fallback Mode (no keys needed) - server runs with prompt-only responses
-- Run `npm test` to verify configuration
+**"No LLM providers configured"**
 
-### "Server not appearing in IDE"
-- Verify MCP server path is correct (use absolute path)
-- Check Node.js is in PATH: `which node`
-- Ensure server starts: `npm start`
-- Restart IDE after configuration changes
+Make sure you've set at least one API key in your `.env` file. If you want to test without keys, there's a fallback mode that works (though responses are limited). Run `npm test` to check your setup.
 
-### "Tool not found in IDE"
-- Verify server is configured in IDE settings
-- Check server is running: `npm start`
-- Verify tool name is `process_committee` (case-sensitive)
-- Check MCP is enabled in IDE
+**"Server not appearing in IDE"**
 
-### "Timeout Error"
-- Agent processing exceeded 2-minute timeout
-- Consider breaking down complex requests
-- Check network connectivity and API response times
+- Make sure the MCP server path in your IDE config is an absolute path
+- Check that Node.js is available: `which node`
+- Try starting the server manually: `npm start`
+- Restart your IDE after changing the MCP config
 
-## 📁 Project Structure
+**"Tool not found in IDE"**
+
+- Double-check the server is configured correctly in IDE settings
+- Make sure the server actually starts: `npm start`
+- The tool name is `process_committee` (case-sensitive)
+- Verify MCP is enabled in your IDE
+
+**"Timeout Error"**
+
+Agents have a 2-minute timeout. If you're hitting this, try breaking your request into smaller chunks. Also check your network connection and API response times.
+
+## Project Structure
 
 ```
 ai-agent-committee/
@@ -394,41 +326,35 @@ ai-agent-committee/
 └── package.json
 ```
 
-## 🧪 Testing
+## Testing
+
+Run the test script:
 
 ```bash
-# Run test script
 npm test
+```
 
-# Custom test
+Or test with your own request:
+
+```bash
 node scripts/testCommittee.js "Your request" "Context" "preset"
 ```
 
-## 🔒 Security
+## Security Notes
 
-- ✅ Input sanitization and validation
-- ✅ API keys stored in `.env` (never commit)
-- ✅ No sensitive data in error messages
-- ✅ Timeout protection prevents resource exhaustion
-- ✅ Injection prevention
+- All inputs are validated and sanitized
+- API keys go in `.env` (never commit this file)
+- Error messages don't leak sensitive info
+- Timeouts prevent resource exhaustion
+- Injection attempts are blocked
 
-## 📚 Resources
+## Resources
 
 - [Model Context Protocol](https://modelcontextprotocol.io/)
 - [OpenAI API Docs](https://platform.openai.com/docs)
 - [Anthropic API Docs](https://docs.anthropic.com/)
 - [Google Gemini API Docs](https://ai.google.dev/docs)
 
-## 📄 License
+## License
 
 MIT
-
----
-
-<div align="center">
-
-**Built with ❤️ using Model Context Protocol**
-
-[Report Bug](https://github.com/your-repo/issues) · [Request Feature](https://github.com/your-repo/issues)
-
-</div>
